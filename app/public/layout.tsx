@@ -7,8 +7,8 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
   const pathname = usePathname();
 
   const navLinks = [
-    { href: '/public/assignments', label: '오늘의 배차표' },
-    { href: '/public/contacts', label: '동료 연락망' },
+    { href: '/public/assignments', label: '배차표' },
+    { href: '/public/contacts', label: '연락망' },
   ];
 
   return (

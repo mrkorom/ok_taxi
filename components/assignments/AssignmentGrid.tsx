@@ -7,7 +7,7 @@ export default function AssignmentGrid({ date, isAdmin }: any) {
   const [assignments, setAssignments] = useState([]);
   const [dailyStatuses, setDailyStatuses] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [isCompactView, setIsCompactView] = useState(false);
+  const [isCompactView, setIsCompactView] = useState(true);
 
   const fetchData = async () => {
     setLoading(true);
@@ -94,6 +94,22 @@ export default function AssignmentGrid({ date, isAdmin }: any) {
       // Refresh data
       await fetchData();
       
+    } catch (error: any) {
+      alert(error.message);
+    }
+  };
+
+  const handleRemove = async (assignmentId: number) => {
+    if (!isAdmin) return;
+    try {
+      const res = await fetch(`/api/assignments?id=${assignmentId}`, {
+        method: 'DELETE',
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || 'Failed to remove assignment');
+      }
+      await fetchData();
     } catch (error: any) {
       alert(error.message);
     }
@@ -203,7 +219,7 @@ export default function AssignmentGrid({ date, isAdmin }: any) {
                     : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
                 }`}
               >
-                {isCompactView ? '상세히 보기' : '간략히 보기'}
+                {isCompactView ? '상세히보기' : '간략히 보기'}
               </button>
             </div>
           </div>
@@ -240,7 +256,9 @@ export default function AssignmentGrid({ date, isAdmin }: any) {
               assignment={assignment}
               dailyStatus={dailyStatus}
               drivers={drivers}
+              assignedDriverIds={(assignments as any[]).map((a) => (a as any).driver_id).filter((id: any) => id !== (assignment as any)?.driver_id) as number[]}
               onAssign={handleAssign}
+              onRemove={handleRemove}
               onStatusChange={handleStatusChange}
               onSwap={handleSwap}
               isAdmin={isAdmin}

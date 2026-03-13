@@ -45,7 +45,7 @@ export default function PublicContactsPage() {
         <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row justify-between items-center py-6 gap-4">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900 tracking-tight">동료 연락망</h1>
+              <h1 className="text-2xl font-bold text-gray-900 tracking-tight">연락망</h1>
               <p className="text-sm text-gray-500 mt-1">현재 운행 중인 전체 동료 기사의 연락처 목록</p>
             </div>
             

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export default function VehicleCard({ vehicle, assignment, dailyStatus, drivers, onAssign, onStatusChange, onSwap, isAdmin, isCompactView }: any) {
+export default function VehicleCard({ vehicle, assignment, dailyStatus, drivers, assignedDriverIds = [], onAssign, onRemove, onStatusChange, onSwap, isAdmin, isCompactView }: any) {
   const [isEditing, setIsEditing] = useState(false);
   const [isDragOver, setIsDragOver] = useState(false);
   const [selectedDriverId, setSelectedDriverId] = useState('');
@@ -11,6 +11,13 @@ export default function VehicleCard({ vehicle, assignment, dailyStatus, drivers,
   
   const handleAssign = () => {
     if (!selectedDriverId) return;
+    if (selectedDriverId === 'REMOVE') {
+      if (assignment?.id) {
+        onRemove(assignment.id);
+        setIsEditing(false);
+      }
+      return;
+    }
     onAssign(vehicle.id, selectedDriverId, shift, notes);
     setIsEditing(false);
   };
@@ -109,19 +116,35 @@ export default function VehicleCard({ vehicle, assignment, dailyStatus, drivers,
         onDragStart={handleDragStart}
         style={{ cursor: isAdmin && assignment && !isEditing ? 'grab' : 'default' }}
       >
-        {assignment && !isEditing ? (
+        {/* Non-normal status: show status badge, block assignment */}
+        {effectiveStatus !== '정상' ? (
+          <div className="flex flex-col items-center justify-center space-y-1 h-full py-2">
+            <span className={`font-extrabold tracking-wide rounded-lg px-3 py-2 text-center ${
+              effectiveStatus === '정비' ? 'bg-red-100 text-red-700 text-base' :
+              effectiveStatus === '부제' ? 'bg-purple-100 text-purple-700 text-base' :
+              effectiveStatus === '점검' ? 'bg-orange-100 text-orange-700 text-base' :
+              effectiveStatus === '대기' ? 'bg-yellow-100 text-yellow-700 text-base' : ''
+            } ${isCompactView ? 'text-[11px] px-2 py-1' : 'text-base'}`}>
+              {effectiveStatus === '정비' ? '구조 · 정비 중' :
+               effectiveStatus === '부제' ? '부제' :
+               effectiveStatus === '점검' ? '주기 관리 · 점검 중' :
+               effectiveStatus === '대기' ? '대기 차량' : effectiveStatus}
+            </span>
+            {!isCompactView && (
+              <p className="text-xs text-gray-400 mt-1">배차가 제한된 상태입니다</p>
+            )}
+          </div>
+        ) : assignment && !isEditing ? (
           <div className="flex flex-col space-y-2">
             <div className={`flex items-center justify-center ${isCompactView ? 'flex-row gap-2' : 'flex-col space-y-3 py-2'}`}>
-              {!isCompactView && (
-                <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold overflow-hidden shadow-sm border border-gray-100">
-                  {assignment.photo_url ? (
-                    <img src={assignment.photo_url} alt={assignment.driver_name} className="w-full h-full object-cover" />
-                  ) : (
-                    <span className="text-3xl">{assignment.driver_name.charAt(0)}</span>
-                  )}
-                </div>
-              )}
-              <div className="text-center">
+              <div className={`${isCompactView ? 'w-[50px] h-[50px] min-w-[50px]' : 'w-20 h-20'} bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold overflow-hidden shadow-sm border border-gray-100`}>
+                {assignment.photo_url ? (
+                  <img src={assignment.photo_url} alt={assignment.driver_name} className="w-full h-full object-cover" />
+                ) : (
+                  <span className={isCompactView ? 'text-xl' : 'text-3xl'}>{assignment.driver_name.charAt(0)}</span>
+                )}
+              </div>
+              <div className={isCompactView ? 'text-left' : 'text-center'}>
                 <p className={`font-bold text-gray-800 ${isCompactView ? 'text-sm' : 'text-xl'}`}>{assignment.driver_name}</p>
                 {!isCompactView && (
                   <div className="flex items-center gap-1 mt-1 text-gray-500 bg-gray-50 px-2 py-0.5 rounded-full text-sm border border-gray-100">
@@ -156,7 +179,12 @@ export default function VehicleCard({ vehicle, assignment, dailyStatus, drivers,
                 className="w-full text-sm border-gray-300 rounded-md py-1.5 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-gray-800"
               >
                 <option value="">-- 기사 선택 --</option>
-                {drivers.map((d: any) => (
+                {assignment && (
+                  <option value="REMOVE" className="text-red-600 font-semibold">🚫 배차 제거</option>
+                )}
+                {drivers
+                  .filter((d: any) => !assignedDriverIds.includes(d.id))
+                  .map((d: any) => (
                   <option key={d.id} value={d.id}>
                     {d.name} ({d.driver_code}) - {d.work_type}
                   </option>
@@ -193,9 +221,13 @@ export default function VehicleCard({ vehicle, assignment, dailyStatus, drivers,
               <button 
                 onClick={handleAssign}
                 disabled={!selectedDriverId}
-                className="flex-1 bg-blue-600 text-white py-1.5 rounded-md text-sm font-medium hover:bg-blue-700 disabled:bg-blue-300 transition-colors"
+                className={`flex-1 py-1.5 rounded-md text-sm font-medium transition-colors disabled:opacity-50 ${
+                  selectedDriverId === 'REMOVE'
+                    ? 'bg-red-600 text-white hover:bg-red-700 disabled:bg-red-300'
+                    : 'bg-blue-600 text-white hover:bg-blue-700 disabled:bg-blue-300'
+                }`}
               >
-                저장
+                {selectedDriverId === 'REMOVE' ? '배차 제거' : '저장'}
               </button>
               <button 
                 onClick={() => setIsEditing(false)}
@@ -221,7 +253,7 @@ export default function VehicleCard({ vehicle, assignment, dailyStatus, drivers,
                effectiveStatus === '대기' ? '대기 차량' : '미배차'}
             </p>
             
-            {isAdmin && effectiveStatus === '정상' && !isCompactView && (
+            {isAdmin && !isCompactView && (
               <button 
                 onClick={() => setIsEditing(true)}
                 className="bg-gray-800 text-white px-4 py-1.5 rounded-md text-sm hover:bg-black transition-colors shadow-sm"

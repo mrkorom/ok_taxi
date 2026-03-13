@@ -32,20 +32,20 @@ export default function Home() {
                         className="px-8 py-4 bg-green-50 text-green-700 border-2 border-green-200 text-lg rounded-lg hover:bg-green-100 transition-colors font-semibold shadow-sm flex items-center justify-center gap-2"
                     >
                         <span>📋</span>
-                        오늘의 배차표 열람
+                        배차표
                     </Link>
                     <Link
                         href="/public/contacts"
                         className="px-8 py-4 bg-blue-50 text-blue-700 border-2 border-blue-200 text-lg rounded-lg hover:bg-blue-100 transition-colors font-semibold shadow-sm flex items-center justify-center gap-2"
                     >
                         <span>📞</span>
-                        기사 동료 연락망
+                        연락망
                     </Link>
                     <Link
                         href="/login"
                         className="px-8 py-4 bg-indigo-600 border-2 border-indigo-600 text-white text-lg rounded-lg hover:bg-indigo-700 transition-colors font-semibold shadow-lg hover:shadow-xl mt-4 sm:mt-0 flex items-center justify-center"
                     >
-                        관리자 로그인
+                        관리자
                     </Link>
                 </div>
 
