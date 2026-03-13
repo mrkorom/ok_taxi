@@ -50,7 +50,7 @@ export interface Vehicle {
     vehicle_number: string;
     vehicle_type: string;
     registration_date: string;
-    status: '운행가능' | '정비중' | '폐차';
+    status: '운행가능' | '정비중' | '폐차' | '말소';
     created_at?: string;
     updated_at?: string;
 }

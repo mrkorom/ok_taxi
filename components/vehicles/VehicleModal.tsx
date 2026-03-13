@@ -208,6 +208,7 @@ export default function VehicleModal({ isOpen, onClose, onSave, vehicle }: Vehic
                   <option value="운행가능">운행가능</option>
                   <option value="정비중">정비중</option>
                   <option value="폐차">폐차</option>
+                  <option value="말소">말소</option>
                 </select>
               </div>
 
@@ -225,7 +226,7 @@ export default function VehicleModal({ isOpen, onClose, onSave, vehicle }: Vehic
             </div>
             
             <p className="text-xs text-gray-500 mt-2 italic">
-              * 상태를 <strong>'폐차'</strong> 또는 <strong>'정비중'</strong>으로 변경하더라도, 기존의 배차 기록은 보존됩니다. 단, 신규 배차 시 선택목록에서는 제외됩니다.
+              * 상태를 <strong>'폐차'</strong>, <strong>'말소'</strong> 또는 <strong>'정비중'</strong>으로 변경하더라도, 기존의 배차 기록은 보존됩니다. 단, 신규 배차 시 선택목록에서는 제외됩니다.
             </p>
           </div>
 

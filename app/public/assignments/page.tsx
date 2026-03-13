@@ -42,7 +42,7 @@ export default function PublicAssignmentsPage() {
         <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row justify-between items-center py-4 gap-4">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900 tracking-tight">오늘의 배차표</h1>
+              <h1 className="text-2xl font-bold text-gray-900 tracking-tight">배차표</h1>
               <p className="text-sm text-gray-500 mt-1">로그인 없이 확인하는 일일 배차 현황 (읽기 전용)</p>
             </div>
             

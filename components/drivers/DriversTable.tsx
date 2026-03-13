@@ -16,12 +16,19 @@ type Driver = {
   photo_url?: string;
 };
 
+type SortKey = 'driver_code' | 'name' | 'phone' | 'status' | 'work_type' | 'start_date';
+type SortDir = 'asc' | 'desc';
+
 export default function DriversTable() {
   const [drivers, setDrivers] = useState<Driver[]>([]);
   const [filteredDrivers, setFilteredDrivers] = useState<Driver[]>([]);
   const [totalDriversCount, setTotalDriversCount] = useState<number>(0);
   const [loading, setLoading] = useState(true);
-  
+
+  // Sort State (default: 사번 내림차순)
+  const [sortKey, setSortKey] = useState<SortKey>('driver_code');
+  const [sortDir, setSortDir] = useState<SortDir>('asc');
+
   // Filters
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('전체');
@@ -30,6 +37,39 @@ export default function DriversTable() {
   // Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDriver, setSelectedDriver] = useState<Driver | null>(null);
+
+  const handleSort = (key: SortKey) => {
+    if (sortKey === key) {
+      setSortDir(d => d === 'desc' ? 'asc' : 'desc');
+    } else {
+      setSortKey(key);
+      setSortDir('desc');
+    }
+  };
+
+  const sortedDrivers = [...filteredDrivers].sort((a, b) => {
+    const valA = (a[sortKey] ?? '').toString().toLowerCase();
+    const valB = (b[sortKey] ?? '').toString().toLowerCase();
+    const cmp = valA < valB ? -1 : valA > valB ? 1 : 0;
+    return sortDir === 'asc' ? cmp : -cmp;
+  });
+
+  const SortIcon = ({ col }: { col: SortKey }) => {
+    if (sortKey !== col) return (
+      <svg className="w-3.5 h-3.5 text-gray-400 ml-1 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4" />
+      </svg>
+    );
+    return sortDir === 'desc' ? (
+      <svg className="w-3.5 h-3.5 text-blue-500 ml-1 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+      </svg>
+    ) : (
+      <svg className="w-3.5 h-3.5 text-blue-500 ml-1 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+      </svg>
+    );
+  };
 
   const fetchDrivers = async () => {
     setLoading(true);
@@ -316,12 +356,22 @@ export default function DriversTable() {
         <table className="w-full text-left whitespace-nowrap">
           <thead className="bg-white text-gray-600 text-sm border-b border-gray-200">
             <tr>
-              <th className="px-6 py-4 font-semibold">사번</th>
-              <th className="px-6 py-4 font-semibold">이름</th>
-              <th className="px-6 py-4 font-semibold">연락처</th>
-              <th className="px-6 py-4 font-semibold">상태</th>
-              <th className="px-6 py-4 font-semibold">운용방식</th>
-              <th className="px-6 py-4 font-semibold">고용/운용일자</th>
+              {([
+                { key: 'driver_code' as SortKey, label: '사번' },
+                { key: 'name' as SortKey, label: '이름' },
+                { key: 'phone' as SortKey, label: '연락처' },
+                { key: 'status' as SortKey, label: '상태' },
+                { key: 'work_type' as SortKey, label: '운용방식' },
+                { key: 'start_date' as SortKey, label: '고용/운용일자' },
+              ]).map(({ key, label }) => (
+                <th
+                  key={key}
+                  className="px-6 py-4 font-semibold cursor-pointer select-none hover:bg-gray-50 transition-colors"
+                  onClick={() => handleSort(key)}
+                >
+                  {label}<SortIcon col={key} />
+                </th>
+              ))}
               <th className="px-6 py-4 font-semibold text-right">관리</th>
             </tr>
           </thead>
@@ -343,7 +393,7 @@ export default function DriversTable() {
                 </td>
               </tr>
             ) : (
-              filteredDrivers.map(driver => (
+              sortedDrivers.map(driver => (
                 <tr key={driver.id} className="hover:bg-blue-50/50 transition-colors">
                   <td className="px-6 py-4">
                     <span className="font-mono bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">{driver.driver_code}</span>

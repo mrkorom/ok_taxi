@@ -99,6 +99,7 @@ export default function VehiclesTable() {
             <option value="운행가능">운행가능</option>
             <option value="정비중">정비중</option>
             <option value="폐차">폐차</option>
+            <option value="말소">말소</option>
           </select>
           
           <div className="relative flex-1 sm:w-64">
@@ -177,6 +178,7 @@ export default function VehiclesTable() {
                     <span className={`px-2.5 py-1 text-xs font-semibold rounded-full border ${
                       vehicle.status === '운행가능' ? 'bg-green-50 text-green-700 border-green-200' :
                       vehicle.status === '정비중' ? 'bg-yellow-50 text-yellow-700 border-yellow-200' :
+                      vehicle.status === '말소' ? 'bg-gray-100 text-gray-500 border-gray-300' :
                       'bg-red-50 text-red-700 border-red-200'
                     }`}>
                       {vehicle.status}

@@ -129,8 +129,21 @@ export default function LoginPage() {
                         </button>
                     </form>
 
+                    {/* 초기화면 바로가기 */}
+                    <div className="mt-4 text-center">
+                        <a
+                            href="/"
+                            className="inline-flex items-center gap-1.5 text-sm text-indigo-600 hover:text-indigo-800 hover:underline transition-colors"
+                        >
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                            </svg>
+                            로그인 없이 초기화면 보기
+                        </a>
+                    </div>
+
                     {/* 도움말 */}
-                    <div className="mt-6 text-center text-sm text-gray-600">
+                    <div className="mt-4 text-center text-sm text-gray-600">
                         <p>초기 관리자 계정</p>
                         <p className="font-mono mt-1">
                             전화번호: 01000000000 | 비밀번호: 1234
