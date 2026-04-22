@@ -59,7 +59,7 @@ export default function VehicleCard({ vehicle, assignment, dailyStatus, drivers,
   
   return (
     <div 
-      className={`bg-white rounded-lg shadow-md hover:shadow-lg border transition-all duration-300 
+      className={`bg-white hover:shadow-lg border transition-all duration-300 
         ${isCompactView ? 'p-2' : 'p-4'} 
         ${isDragOver ? 'border-dashed border-2 bg-blue-50 border-blue-500 transform scale-105' : 'border-gray-200 hover:border-blue-500'}
       `}
@@ -69,7 +69,7 @@ export default function VehicleCard({ vehicle, assignment, dailyStatus, drivers,
     >
       <div className={`flex justify-between items-center border-b ${isCompactView ? 'mb-2 pb-1' : 'mb-4 pb-2'}`}>
         <div>
-          <h3 className={`font-bold text-gray-800 ${isCompactView ? 'text-sm' : 'text-xl'}`}>{vehicle.vehicle_number}</h3>
+          <h3 className={`font-bold text-gray-800 ${isCompactView ? 'text-sm' : 'text-xl'}`}>{vehicle.vehicle_number.slice(-4)}</h3>
           <div className={`flex items-center gap-1 mt-1 ${isCompactView ? 'hidden' : ''}`}>
             <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">{vehicle.vehicle_type}</span>
             {vehicle.car_model && (
@@ -136,24 +136,24 @@ export default function VehicleCard({ vehicle, assignment, dailyStatus, drivers,
           </div>
         ) : assignment && !isEditing ? (
           <div className="flex flex-col space-y-2">
-            <div className={`flex items-center justify-center ${isCompactView ? 'flex-row gap-2' : 'flex-col space-y-3 py-2'}`}>
-              <div className={`${isCompactView ? 'w-[50px] h-[50px] min-w-[50px]' : 'w-20 h-20'} bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold overflow-hidden shadow-sm border border-gray-100`}>
+            <div className="flex flex-col items-center justify-center space-y-2 py-2">
+              <div className={`${isCompactView ? 'w-[50px] h-[50px] min-w-[50px]' : 'w-20 h-20'} bg-blue-100 rounded-[5px] flex items-center justify-center text-blue-600 font-bold overflow-hidden shadow-sm border border-gray-100`}>
                 {assignment.photo_url ? (
                   <img src={assignment.photo_url} alt={assignment.driver_name} className="w-full h-full object-cover" />
                 ) : (
                   <span className={isCompactView ? 'text-xl' : 'text-3xl'}>{assignment.driver_name.charAt(0)}</span>
                 )}
               </div>
-              <div className={isCompactView ? 'text-left' : 'text-center'}>
-                <p className={`font-bold text-gray-800 ${isCompactView ? 'text-sm' : 'text-xl'}`}>{assignment.driver_name}</p>
-                {!isCompactView && (
-                  <div className="flex items-center gap-1 mt-1 text-gray-500 bg-gray-50 px-2 py-0.5 rounded-full text-sm border border-gray-100">
+              <div className="text-center w-full">
+                <p className={`font-bold text-gray-800 ${isCompactView ? 'text-xs' : 'text-xl'}`}>{assignment.driver_name}</p>
+                <div className={`flex items-center justify-center gap-1 mt-0.5 text-gray-500 ${isCompactView ? 'text-[10px]' : 'bg-gray-50 px-2 py-0.5 rounded-full text-sm border border-gray-100'}`}>
+                   {!isCompactView && (
                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                      </svg>
-                     <span>{assignment.phone}</span>
-                  </div>
-                )}
+                   )}
+                   <span>{assignment.phone}</span>
+                </div>
               </div>
             </div>
             {assignment.notes && !isCompactView && (
