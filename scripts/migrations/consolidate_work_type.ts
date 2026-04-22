@@ -24,10 +24,10 @@ async function fixWorkTypes() {
 
         // Convert any remaining '격일' to '격일A'
         await connection.query(`UPDATE drivers SET work_type = '격일A' WHERE work_type = '격일'`);
-        await connection.query(`UPDATE drivers SET work_type = '일차' WHERE work_type = '아르바이트'`);
+        await connection.query(`UPDATE drivers SET work_type = '?�차' WHERE work_type = '?�르바이??`);
         
         // Just in case any driver has empty work_type
-        await connection.query(`UPDATE drivers SET work_type = '일차' WHERE work_type IS NULL OR work_type = ''`);
+        await connection.query(`UPDATE drivers SET work_type = '?�차' WHERE work_type IS NULL OR work_type = ''`);
 
         console.log("Work types standardized in drivers table.");
         

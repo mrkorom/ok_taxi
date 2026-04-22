@@ -13,7 +13,7 @@ async function migrateDatabase() {
                 UNIQUE KEY unique_vehicle (vehicle_id),
                 FOREIGN KEY (vehicle_id) REFERENCES vehicles(id) ON DELETE CASCADE,
                 FOREIGN KEY (driver_id) REFERENCES drivers(id) ON DELETE CASCADE
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='차량별 전속 기사 관리';
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='차량�??�속 기사 관�?;
         `);
         console.log('dedicated_drivers table created or verified.');
 

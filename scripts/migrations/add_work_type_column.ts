@@ -5,7 +5,7 @@ async function fixColumn() {
         console.log("Adding work_type column to drivers...");
         await pool.query(`
             ALTER TABLE drivers 
-            ADD COLUMN work_type VARCHAR(20) DEFAULT '일차' COMMENT '운용 방식'
+            ADD COLUMN work_type VARCHAR(20) DEFAULT '?�차' COMMENT '?�용 방식'
         `);
         console.log("Added work_type to drivers.");
         process.exit(0);
