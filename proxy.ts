@@ -5,7 +5,7 @@ import { verifyTokenEdge } from './lib/auth-edge';
 // 보호할 경로 목록
 const protectedPaths = ['/dashboard', '/drivers', '/vehicles', '/assignments', '/statistics'];
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
     const { pathname } = request.nextUrl;
 
     // 보호된 경로인지 확인
