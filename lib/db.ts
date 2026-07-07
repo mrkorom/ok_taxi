@@ -1,4 +1,8 @@
 import mysql from 'mysql2/promise';
+import { loadEnvConfig } from '@next/env';
+
+// 환경 변수 로드 (.env.local 등)
+loadEnvConfig(process.cwd());
 
 // 환경 변수 확인
 const dbConfig = {
